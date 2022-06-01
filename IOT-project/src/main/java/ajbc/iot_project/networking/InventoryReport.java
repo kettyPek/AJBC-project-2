@@ -5,17 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
+
 
 import com.google.gson.Gson;
 
-import ajbc.iot_project.DB.DBMock;
 import ajbc.iot_project.models.IOTThing;
 
 public class InventoryReport implements Runnable{
@@ -34,14 +27,17 @@ public class InventoryReport implements Runnable{
 		try(BufferedReader bufferReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);){
 			
-			System.out.println("Connected to server");
+			System.out.println("Client connected to server");
 			
 			Gson gson = new Gson();
 			String thingJson = gson.toJson(thing, thing.getClass());
 			
 			
 			writer.println(thingJson);
-			System.out.println("IOT thing sent to the server");
+			System.out.println("IOT thing "+ thing.getUuid() +" sent to the server");
+			
+			String serverMsg = bufferReader.readLine();
+			System.out.println("Server message: " + serverMsg);
 
 			
 		} catch (IOException e) {

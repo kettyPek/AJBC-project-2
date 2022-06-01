@@ -6,13 +6,11 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
-import ajbc.iot_project.DB.DBMock;
 import ajbc.iot_project.enums.HardwareType;
 import ajbc.iot_project.models.Device;
 import ajbc.iot_project.models.IOTThing;
@@ -28,7 +26,7 @@ public class ClientRunner {
 		
 		
 		ExecutorService clientsService = Executors.newFixedThreadPool(thingsList.size());
-		for(int i=0; i<2;i++) {
+		for(int i=0; i<2;i++) 
 			thingsList.forEach(thing -> {
 				try {
 					thing.simulateInventoryChange();
@@ -39,8 +37,7 @@ public class ClientRunner {
 				}
 			});
 			
-			thingsList.forEach(System.out::println);
-		}
+		
 
 		
 		clientsService.shutdown();
@@ -50,9 +47,9 @@ public class ClientRunner {
 	
 	public static List<IOTThing> createIOTThings() {
 		List<IOTThing> thingsList = Arrays.asList(
-//				new IOTThing(HardwareType.SOLAR_DEVICE,"solar100","solar",createListOfDevices()),
-//				new IOTThing(HardwareType.SOLAR_DEVICE,"solar500","solar",createListOfDevices()),
-//				new IOTThing(HardwareType.ELECTRIC_MACHINE,"electro","EL",createListOfDevices()),
+				new IOTThing(HardwareType.SOLAR_DEVICE,"solar100","solar",createListOfDevices()),
+				new IOTThing(HardwareType.SOLAR_DEVICE,"solar500","solar",createListOfDevices()),
+				new IOTThing(HardwareType.ELECTRIC_MACHINE,"electro","EL",createListOfDevices()),
 				new IOTThing(HardwareType.ELECTRIC_MACHINE,"electro500","EL",createListOfDevices()));
 		return thingsList;
 	}

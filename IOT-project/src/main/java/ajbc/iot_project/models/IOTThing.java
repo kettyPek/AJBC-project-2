@@ -28,10 +28,8 @@ public class IOTThing extends Hardware{
 	
 	public void simulateInventoryChange() {
 		int removeIndex = (int)(Math.random()*devices.size());
-		System.out.println("remove" + removeIndex);
 		devices.remove(removeIndex);
 		int addIndex = (int)(Math.random()*devices.size());
-		System.out.println("add:"+addIndex);
 		devices.add(addIndex, new Device(HardwareType.ACTUATOR,"acw","BF"));
 	}
 

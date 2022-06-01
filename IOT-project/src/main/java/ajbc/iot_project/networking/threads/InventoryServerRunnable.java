@@ -40,14 +40,25 @@ public class InventoryServerRunnable implements Runnable {
 			Gson gson = new Gson();
 			IOTThing thing = gson.fromJson(jasonReader, IOTThing.class);
 			
-			System.out.println(thing);
+			System.out.println("IOT thing " + thing.getUuid()+ " received from the client");
 			
-			dbService.updateDB(thing);
+			String msg ;
+			if(!dbService.containsIOTThing(thing)) {
+				dbService.addToDB(thing);
+				msg = "IOT thing " + thing.getUuid() + " added to DB";
+			}
+			else {
+				dbService.updateDB(thing);
+				msg = "Devices list was updated for IOT thing " + thing.getUuid();
+			}
+			
+			writer.println(msg);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
 
 }

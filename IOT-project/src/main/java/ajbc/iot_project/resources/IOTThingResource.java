@@ -23,12 +23,12 @@ public class IOTThingResource {
 	
 	DBService dbService = new DBService();
 	
-	@GET
-	@Path("/{id}")
-	public Response getStudentByID(@PathParam("id") UUID id) {
-		return dbService.getIOTThingByID(id);
-	}
-	
+//	@GET
+//	@Path("/{id}")
+//	public Response getStudentByID(@PathParam("id") UUID id) {
+//		return dbService.getIOTThingByID(id);
+//	}
+//	
 	
 	
 

@@ -20,8 +20,8 @@ import ajbc.iot_project.models.IOTThing;
 public class DBMock {
 	
 	private static DBMock instance = null;
-	private static Map<String,IOTThing> iotThings;
-	private static Map<String,Device> devices;
+	private static Map<UUID,IOTThing> iotThings;
+	private static Map<UUID,Device> devices;
 	
 	public static synchronized DBMock getInstance() {
 		if(instance==null)
@@ -30,15 +30,15 @@ public class DBMock {
 	}
 	
 	private DBMock() {
-		iotThings = new HashMap<String,IOTThing>();
-		devices = new HashMap<String,Device>();
+		iotThings = new HashMap<UUID,IOTThing>();
+		devices = new HashMap<UUID,Device>();
 	}
 
-	public Map<String, IOTThing> getIotThings() {
+	public Map<UUID, IOTThing> getIotThings() {
 		return iotThings;
 	}
 
-	public Map<String, Device> getDevices() {
+	public Map<UUID, Device> getDevices() {
 		return devices;
 	}
 	
