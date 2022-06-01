@@ -32,6 +32,7 @@ public class DBMock {
 	private DBMock() {
 		iotThings = new HashMap<UUID,IOTThing>();
 		devices = new HashMap<UUID,Device>();
+		fillDB();
 	}
 
 	public Map<UUID, IOTThing> getIotThings() {
@@ -40,6 +41,30 @@ public class DBMock {
 
 	public Map<UUID, Device> getDevices() {
 		return devices;
+	}
+	
+	private void fillDB() {
+		List<IOTThing> thingsList = createIOTThings();
+		thingsList.forEach(thing -> iotThings.put(thing.getUuid(), thing));
+		thingsList.forEach(System.out::println);
+	}
+	
+	private List<IOTThing> createIOTThings() {
+		List<IOTThing> thingsList = Arrays.asList(
+				new IOTThing(HardwareType.SOLAR_DEVICE,"solar100","solar",createListOfDevices()),
+				new IOTThing(HardwareType.SOLAR_DEVICE,"solar500","solar",createListOfDevices()),
+				new IOTThing(HardwareType.ELECTRIC_MACHINE,"electro","EL",createListOfDevices()),
+				new IOTThing(HardwareType.ELECTRIC_MACHINE,"electro500","EL",createListOfDevices()));
+		return thingsList;
+	}
+	
+	private List<Device> createListOfDevices(){
+		List<Device> devicesList = new ArrayList<Device>();
+		devicesList.add(new Device(HardwareType.ACTUATOR,"Actuator100","ABX"));
+		devicesList.add(new Device(HardwareType.CONTROLLER,"RaspberryPI","Raspberry"));
+		devicesList.add(new Device(HardwareType.SENSOR,"sense","GD"));
+		devicesList.forEach(device -> devices.put(device.getUuid(), device));
+		return devicesList;
 	}
 	
 }

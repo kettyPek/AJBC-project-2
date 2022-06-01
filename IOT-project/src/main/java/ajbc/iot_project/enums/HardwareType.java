@@ -8,4 +8,5 @@ public enum HardwareType {
 
 	SENSOR, CONTROLLER, ACTUATOR, SOLAR_DEVICE,ELECTRIC_MACHINE;
 
+
 }

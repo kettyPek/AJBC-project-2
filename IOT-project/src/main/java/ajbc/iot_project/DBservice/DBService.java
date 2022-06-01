@@ -1,10 +1,13 @@
 package ajbc.iot_project.DBservice;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import ajbc.iot_project.DB.DBMock;
+import ajbc.iot_project.enums.HardwareType;
 import ajbc.iot_project.models.Device;
 import ajbc.iot_project.models.IOTThing;
 
@@ -23,6 +26,10 @@ public class DBService {
 		db = DBMock.getInstance();
 		iotThings = db.getIotThings();
 		devices = db.getDevices();
+	}
+	
+	public List<IOTThing> getAllIOTThings(){
+		return iotThings.values().stream().collect(Collectors.toList());
 	}
 
 	public void updateDB(IOTThing thing) {
@@ -51,5 +58,47 @@ public class DBService {
 			iotThings.put(thing.getUuid(), thing);
 			thing.getDevices().forEach(device -> devices.put(device.getUuid(), device));
 		}
+	}
+
+	public IOTThing getIOTThingByID(UUID id) {
+		return iotThings.get(id);
+	}
+
+	public IOTThing getIOTThingByProperties(String type, String model, String manufacturer) {
+		IOTThing thing = null;
+		try{
+			HardwareType hardwareType = HardwareType.valueOf(type.toUpperCase());
+			List<IOTThing> thingsList = iotThings.values().stream().collect(Collectors.toList());
+			for(IOTThing iotThing : thingsList) 
+				if(iotThing.getHardwareType()==hardwareType && iotThing.getModel().equalsIgnoreCase(model) && iotThing.getManufacturer().equalsIgnoreCase(manufacturer)) {
+					thing = iotThing;
+					break;
+				}
+		}catch(IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+
+		return thing;
+	}
+
+	public List<Device> getAllDevices() {
+		return devices.values().stream().collect(Collectors.toList());
+	}
+
+	public Device getDeviceByID(UUID id) {
+		return devices.get(id);
+	}
+
+	public List<Device> getDevicesByProperties(String type, String model, String manufacturer, UUID thingID) {
+		List<Device> devices = new ArrayList<Device>();
+		try{
+			devices.addAll(iotThings.get(thingID).getDevices());
+			HardwareType hardwareType = HardwareType.valueOf(type.toUpperCase());
+			return devices.stream().filter(device -> device.getHardwareType()==hardwareType && device.getModel().equalsIgnoreCase(model) &&
+				device.getManufacturer().equalsIgnoreCase(manufacturer)).collect(Collectors.toList());
+		}catch(IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}	
 }
