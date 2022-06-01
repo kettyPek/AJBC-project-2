@@ -6,6 +6,6 @@ package ajbc.iot_project.enums;
  */
 public enum HardwareType {
 
-	SENSOR, CONTROLLER, ACTUATOR;
+	SENSOR, CONTROLLER, ACTUATOR, SOLAR_DEVICE,ELECTRIC_MACHINE;
 
 }

@@ -4,7 +4,7 @@ package ajbc.iot_project.exceptions;
  * @author ketty
  *
  */
-public class MissimgDataException extends Exception {
+public class MissimgDataException extends RuntimeException {
 	
 	private static final long serialVersionUID = -8559387576247588570L;
 

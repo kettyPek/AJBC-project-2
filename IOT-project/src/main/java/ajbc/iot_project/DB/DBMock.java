@@ -1,9 +1,13 @@
 package ajbc.iot_project.DB;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import ajbc.iot_project.enums.HardwareType;
 import ajbc.iot_project.models.Device;
 import ajbc.iot_project.models.IOTThing;
 
@@ -16,8 +20,8 @@ import ajbc.iot_project.models.IOTThing;
 public class DBMock {
 	
 	private static DBMock instance = null;
-	private Map<UUID,IOTThing> iotThings;
-	private Map<UUID,Device> devices;
+	private static Map<String,IOTThing> iotThings;
+	private static Map<String,Device> devices;
 	
 	public static synchronized DBMock getInstance() {
 		if(instance==null)
@@ -26,15 +30,15 @@ public class DBMock {
 	}
 	
 	private DBMock() {
-		iotThings = new HashMap<UUID,IOTThing>();
-		devices = new HashMap<UUID,Device>();
+		iotThings = new HashMap<String,IOTThing>();
+		devices = new HashMap<String,Device>();
 	}
 
-	public Map<UUID, IOTThing> getIotThings() {
+	public Map<String, IOTThing> getIotThings() {
 		return iotThings;
 	}
 
-	public Map<UUID, Device> getDevices() {
+	public Map<String, Device> getDevices() {
 		return devices;
 	}
 	

@@ -20,12 +20,26 @@ public class IOTThing extends Hardware{
 		super(hardwareType, model, manufacturer);
 		this.devices = devices;
 	}
+	
+	
+	public List<Device> getDevices() {
+		return devices;
+	}
+	
+	public void simulateInventoryChange() {
+		int removeIndex = (int)(Math.random()*devices.size());
+		System.out.println("remove" + removeIndex);
+		devices.remove(removeIndex);
+		int addIndex = (int)(Math.random()*devices.size());
+		System.out.println("add:"+addIndex);
+		devices.add(addIndex, new Device(HardwareType.ACTUATOR,"acw","BF"));
+	}
 
 	@Override
 	public String toString() {
-		return "IOTThing [devices=" + devices + ", getUuid()=" + getUuid() + ", getHardwareType()=" + getHardwareType()
-				+ ", getModel()=" + getModel() + ", getManufacturer()=" + getManufacturer() + ", toString()="
-				+ super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + "]";
+		return super.toString()+"IOTThing [devices=" + devices + "]";
 	}
+
+	
 
 }
