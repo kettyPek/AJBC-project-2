@@ -8,11 +8,11 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class MissingDataExceptionMapper implements ExceptionMapper<MissingDataException>{
+public class NotMatchingDataExceptionMapper implements ExceptionMapper<NotMatchingDataException>{
 
 	@Override
-	public Response toResponse(MissingDataException e) {
-		ErrorMassage errorMessage = new ErrorMassage(e.getMessage(), InternalErrorCode.INVALID_ID);
+	public Response toResponse(NotMatchingDataException e) {
+		ErrorMassage errorMessage = new ErrorMassage(e.getMessage(), InternalErrorCode.UNMATCHED_DATA);
 		return Response.status(Status.NOT_FOUND).entity(errorMessage).build();
 	}
 }

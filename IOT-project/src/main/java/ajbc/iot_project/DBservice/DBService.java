@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import ajbc.iot_project.DB.DBMock;
 import ajbc.iot_project.enums.HardwareType;
 import ajbc.iot_project.exceptions.MissingDataException;
+import ajbc.iot_project.exceptions.NotMatchingDataException;
 import ajbc.iot_project.models.Device;
 import ajbc.iot_project.models.IOTThing;
 
@@ -28,6 +29,8 @@ public class DBService {
 		iotThings = db.getIotThings();
 		devices = db.getDevices();
 	}
+	
+
 	/**
 	 * Returns list of IOT things from DB
 	 * @return list of IOT things from DB
@@ -91,41 +94,70 @@ public class DBService {
 		return thing;
 	}
 
+	/**
+	 * Return a IOTThing by given parameters
+	 * @param type - type of the IOTThing
+	 * @param model - model of the IOTThing
+	 * @param manufacturer - manufacturer of the IOTThing
+	 * @return IOTThing if it exist in DB
+	 */
 	public IOTThing getIOTThingByProperties(String type, String model, String manufacturer) {
-		IOTThing thing = null;
 		try{
 			HardwareType hardwareType = HardwareType.valueOf(type.toUpperCase());
 			List<IOTThing> thingsList = iotThings.values().stream().collect(Collectors.toList());
 			for(IOTThing iotThing : thingsList) 
 				if(iotThing.getHardwareType()==hardwareType && iotThing.getModel().equalsIgnoreCase(model) && iotThing.getManufacturer().equalsIgnoreCase(manufacturer)) {
-					thing = iotThing;
-					break;
+					return iotThing;
 				}
 		}catch(IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 
-		return thing;
+		throw new NotMatchingDataException("given data doesn't match any IOT thing");
 	}
 
+	/**
+	 * Returns list of Devices from DB
+	 * @return list of Devices things from DB
+	 */
 	public List<Device> getAllDevices() {
 		return devices.values().stream().collect(Collectors.toList());
 	}
 
+	/**
+	 * Returns Device object from DB by given id
+	 * @param id - id of Device 
+	 * @return Device if id exist in DB
+	 * @throws 
+	 * MissingDataException if id doesn't exist in DB
+	 */
 	public Device getDeviceByID(UUID id) {
-		return devices.get(id);
+		Device device = devices.get(id);
+		if(device==null)
+			throw new MissingDataException("id " + id + " doesn't exist in DB");
+		return device;
 	}
 
+	/**
+	 * Return a Device by given parameters
+	 * @param type - type of the device
+	 * @param model - model of the device
+	 * @param manufacturer - manufacturer of the device
+	 * @param thingID - ID of IOTThing which the device connected to
+	 * @return Device if it exist in DB
+	 */
 	public List<Device> getDevicesByProperties(String type, String model, String manufacturer, UUID thingID) {
-		List<Device> devices = new ArrayList<Device>();
-		try{
-			devices.addAll(iotThings.get(thingID).getDevices());
+		if(!iotThings.containsKey(thingID))
+			throw new MissingDataException("IOT thing id " + thingID + " doesn't exist in DB");
+		else {
+			List<Device> devices = iotThings.get(thingID).getDevices();
 			HardwareType hardwareType = HardwareType.valueOf(type.toUpperCase());
-			return devices.stream().filter(device -> device.getHardwareType()==hardwareType && device.getModel().equalsIgnoreCase(model) &&
-				device.getManufacturer().equalsIgnoreCase(manufacturer)).collect(Collectors.toList());
-		}catch(IllegalArgumentException e) {
-			e.printStackTrace();
+			devices = devices.stream().filter(device -> device.getHardwareType()==hardwareType && device.getModel().equalsIgnoreCase(model) &&
+					device.getManufacturer().equalsIgnoreCase(manufacturer)).collect(Collectors.toList());
+			if(devices.isEmpty())
+				throw new NotMatchingDataException("given data doesn't match any Device");
+			return devices;
 		}
-		return null;
+
 	}	
 }

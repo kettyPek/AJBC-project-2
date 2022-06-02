@@ -8,7 +8,7 @@ public class GeneralExceptionMapper implements ExceptionMapper<Throwable>{
 	
 	@Override
 	public Response toResponse(Throwable exception) {
-		return Response.status(Status.EXPECTATION_FAILED).entity(exception.getMessage()).build();
+		return Response.status(Status.NOT_FOUND).entity(exception.getMessage()).build();
 	}
 
 }
