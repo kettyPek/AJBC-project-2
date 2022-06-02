@@ -1,6 +1,7 @@
 package ajbc.iot_project.models;
 
 import java.util.List;
+import java.util.Objects;
 
 import ajbc.iot_project.enums.HardwareType;
 /**
@@ -38,6 +39,20 @@ public class IOTThing extends Hardware{
 		return super.toString()+"IOTThing [devices=" + devices + "]";
 	}
 
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IOTThing other = (IOTThing) obj;
+		return this.getUuid() == other.getUuid();
+	}
+
+	
 	
 
 }

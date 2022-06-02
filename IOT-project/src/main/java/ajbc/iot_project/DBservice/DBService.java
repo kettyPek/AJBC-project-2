@@ -101,19 +101,25 @@ public class DBService {
 	 * @param manufacturer - manufacturer of the IOTThing
 	 * @return IOTThing if it exist in DB
 	 */
-	public IOTThing getIOTThingByProperties(String type, String model, String manufacturer) {
+	public List<IOTThing> getIOTThingByProperties(String type, String model, String manufacturer) {
+		List<IOTThing> things = new ArrayList<IOTThing>();
 		try{
 			HardwareType hardwareType = HardwareType.valueOf(type.toUpperCase());
 			List<IOTThing> thingsList = iotThings.values().stream().collect(Collectors.toList());
-			for(IOTThing iotThing : thingsList) 
-				if(iotThing.getHardwareType()==hardwareType && iotThing.getModel().equalsIgnoreCase(model) && iotThing.getManufacturer().equalsIgnoreCase(manufacturer)) {
-					return iotThing;
+			for(IOTThing iotThing : thingsList) {
+				if(iotThing.getHardwareType()==hardwareType && iotThing.getModel().equalsIgnoreCase(model) &&
+				iotThing.getManufacturer().equalsIgnoreCase(manufacturer)) {
+					things.add(iotThing);
 				}
+			}
 		}catch(IllegalArgumentException e) {
 			e.printStackTrace();
 		}
-
-		throw new NotMatchingDataException("given data doesn't match any IOT thing");
+		
+		if(things.isEmpty())
+			throw new NotMatchingDataException("given data doesn't match any IOT thing");
+		else
+			return things;
 	}
 
 	/**

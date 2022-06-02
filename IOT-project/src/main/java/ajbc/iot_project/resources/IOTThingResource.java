@@ -1,6 +1,5 @@
 package ajbc.iot_project.resources;
 
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,11 +12,9 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-import jakarta.ws.rs.core.UriInfo;
 
 /**
  * This class handles Api requests of IOT thing
@@ -48,7 +45,7 @@ public class IOTThingResource {
 	@GET
 	@Path("/filter")
 	public Response getIOTThingByProperties(@BeanParam IOTThingFilterBean iotThingFilterBean) {
-		IOTThing thing = dbService.getIOTThingByProperties(iotThingFilterBean.getType(),iotThingFilterBean.getModle(),iotThingFilterBean.getManufacturer());
+		List<IOTThing> thing = dbService.getIOTThingByProperties(iotThingFilterBean.getType(),iotThingFilterBean.getModle(),iotThingFilterBean.getManufacturer());
 		return Response.ok().entity(thing).build();
 	}
 	
