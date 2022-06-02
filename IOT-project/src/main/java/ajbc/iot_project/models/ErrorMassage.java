@@ -6,18 +6,16 @@ public class ErrorMassage {
 	
 	private String errorMessage;
 	private InternalErrorCode errorCode;
-	private String docsLink;
 	
 	public ErrorMassage() {
 		
 	}
 	
 	
-	public ErrorMassage(String errorMessage, InternalErrorCode errorCode, String docsLink) {
+	public ErrorMassage(String errorMessage, InternalErrorCode errorCode) {
 		super();
 		this.errorMessage = errorMessage;
 		this.errorCode = errorCode;
-		this.docsLink = docsLink;
 	}
 
 
@@ -39,15 +37,4 @@ public class ErrorMassage {
 	public void setErrorCode(InternalErrorCode errorCode) {
 		this.errorCode = errorCode;
 	}
-
-
-	public String getDocsLink() {
-		return docsLink;
-	}
-
-
-	public void setDocsLink(String docsLink) {
-		this.docsLink = docsLink;
-	}
-
 }

@@ -37,13 +37,6 @@ public class DeviceResource {
 		return Response.ok().entity(device).build();
 	}
 	
-//	@GET
-//	@Path("/{type}/{model}/{manufacturer}/{thingID}")
-//	public Response getDevicesByProperties(@PathParam("type") String type,@PathParam("model") String model,@PathParam("manufacturer") String manufacturer,@PathParam("thingID") UUID thingID) {
-//		List<Device> devices = dbService.getDevicesByProperties(type,model,manufacturer,thingID);
-//		return Response.ok().entity(devices).build();
-//	}
-	
 	@GET
 	@Path("/filter")
 	public Response getDevicesByProperties(@BeanParam DeviceFilterBeans DeviceFilterBea) {

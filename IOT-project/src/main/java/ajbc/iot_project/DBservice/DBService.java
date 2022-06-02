@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import ajbc.iot_project.DB.DBMock;
 import ajbc.iot_project.enums.HardwareType;
+import ajbc.iot_project.exceptions.MissingDataException;
 import ajbc.iot_project.models.Device;
 import ajbc.iot_project.models.IOTThing;
 
@@ -27,11 +28,18 @@ public class DBService {
 		iotThings = db.getIotThings();
 		devices = db.getDevices();
 	}
-	
+	/**
+	 * Returns list of IOT things from DB
+	 * @return list of IOT things from DB
+	 */
 	public List<IOTThing> getAllIOTThings(){
 		return iotThings.values().stream().collect(Collectors.toList());
 	}
 
+	/**
+	 * Replace IOT thing in the  DB with a given IOT thing only if the thing exist in DB.
+	 * @param thing - IOT thing to replace
+	 */
 	public void updateDB(IOTThing thing) {
 
 		if(iotThings.containsKey(thing.getUuid())) {
@@ -49,10 +57,19 @@ public class DBService {
 		}
 	}
 
+	/**
+	 * Checks if DB contains given IOT thing
+	 * @param thing - IOT thing to search
+	 * @return true if IOT things exist in DB, otherwise return false
+	 */
 	public boolean containsIOTThing(IOTThing thing) {
 		return iotThings.containsKey(thing.getUuid());
 	}
 
+	/**
+	 * Adding IOT thing to DB only if it doesn't exist in DB 
+	 * @param thing - IOT thing to add
+	 */
 	public void addToDB(IOTThing thing) {
 		if(!containsIOTThing(thing)) {
 			iotThings.put(thing.getUuid(), thing);
@@ -60,8 +77,18 @@ public class DBService {
 		}
 	}
 
+	/**
+	 * Returns IOTThing object from DB by given id
+	 * @param id - id of IOTThing 
+	 * @return IOTThing if id exist in DB
+	 * @throws 
+	 * MissingDataException if id doesn't exist in DB
+	 */
 	public IOTThing getIOTThingByID(UUID id) {
-		return iotThings.get(id);
+		IOTThing thing = iotThings.get(id);
+		if(thing==null)
+			throw new MissingDataException("id " + id + " doesn't exist in DB");
+		return thing;
 	}
 
 	public IOTThing getIOTThingByProperties(String type, String model, String manufacturer) {

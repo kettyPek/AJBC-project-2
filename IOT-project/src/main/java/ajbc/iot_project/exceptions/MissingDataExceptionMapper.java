@@ -8,13 +8,11 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class MissingDataExceptionMapper implements ExceptionMapper<MissimgDataException>{
+public class MissingDataExceptionMapper implements ExceptionMapper<MissingDataException>{
 
 	@Override
-	public Response toResponse(MissimgDataException e) {
-		ErrorMassage errorMessage = new ErrorMassage(e.getMessage(), InternalErrorCode.INVALID_ID, "google.com");
-		return Response.status(Status.NOT_FOUND)
-		.entity(errorMessage)
-		.build();
+	public Response toResponse(MissingDataException e) {
+		ErrorMassage errorMessage = new ErrorMassage(e.getMessage(), InternalErrorCode.INVALID_ID);
+		return Response.status(Status.BAD_REQUEST).entity(errorMessage).build();
 	}
 }
