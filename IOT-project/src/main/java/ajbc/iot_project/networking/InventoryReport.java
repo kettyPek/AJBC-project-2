@@ -30,14 +30,14 @@ public class InventoryReport implements Runnable{
 			System.out.println("Client connected to server");
 			
 			Gson gson = new Gson();
-			String thingJson = gson.toJson(thing, thing.getClass());
+			String thingJson = gson.toJson(thing, IOTThing.class);
 			
 			
 			writer.println(thingJson);
 			System.out.println("IOT thing "+ thing.getUuid() +" sent to the server");
 			
-			String serverMsg = bufferReader.readLine();
-			System.out.println("Server message: " + serverMsg);
+//			String serverMsg = bufferReader.readLine();
+//			System.out.println("Server message: " + serverMsg);
 
 			
 		} catch (IOException e) {

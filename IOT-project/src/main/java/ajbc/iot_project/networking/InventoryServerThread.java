@@ -9,17 +9,18 @@ import java.util.concurrent.TimeUnit;
 
 import ajbc.iot_project.networking.threads.InventoryServerRunnable;
 
-public class InventoryServer {
+public class InventoryServerThread extends Thread {
 
 	private final int PORT;
+	ExecutorService executorService;
 
-	public InventoryServer(int port) {
+	public InventoryServerThread(int port) {
 		this.PORT = port;
+		executorService = Executors.newCachedThreadPool();
 	}
 
-	public void startServer() throws InterruptedException {
-
-		ExecutorService executorService = Executors.newCachedThreadPool();
+	@Override
+	public void run() {
 
 		try (ServerSocket serverSocket = new ServerSocket(PORT);) {
 
@@ -32,21 +33,29 @@ public class InventoryServer {
 		} catch (IOException e) {
 			System.err.println("Failed to start server on port " + PORT);
 			e.printStackTrace();
-		} finally {
-			executorService.shutdown();
-			executorService.awaitTermination(2, TimeUnit.SECONDS);
 		}
 
 	}
 
-	public static void main(String[] args) throws InterruptedException {
+	public void kill() {
 
-		int port = 8098;
-
-		InventoryServer inventoryServer = new InventoryServer(port);
-		
-		inventoryServer.startServer();
+		try {
+			executorService.shutdown();
+			executorService.awaitTermination(2, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 	}
+
+//	public static void main(String[] args) throws InterruptedException {
+//
+//		int port = 8098;
+//
+//		InventoryServer inventoryServer = new InventoryServer(port);
+//		
+//		inventoryServer.startServer();
+//
+//	}
 
 }

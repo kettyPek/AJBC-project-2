@@ -22,6 +22,7 @@ public class InventoryServerRunnable implements Runnable {
 
 	private Socket clientSocket;
 	private DBService dbService;
+	private boolean stopped;
 	
 	public InventoryServerRunnable(Socket clientSocket) {
 		this.clientSocket = clientSocket;
@@ -34,11 +35,10 @@ public class InventoryServerRunnable implements Runnable {
 
 		try(BufferedReader bufferReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);){
-			
-			JsonReader jasonReader = new JsonReader(bufferReader);
+			String line = bufferReader.readLine();
 			
 			Gson gson = new Gson();
-			IOTThing thing = gson.fromJson(jasonReader, IOTThing.class);
+			IOTThing thing = gson.fromJson(line, IOTThing.class);
 			
 			System.out.println("IOT thing " + thing.getUuid()+ " received from the client");
 			
@@ -52,12 +52,16 @@ public class InventoryServerRunnable implements Runnable {
 				msg = "Devices list was updated for IOT thing " + thing.getUuid();
 			}
 			
-			writer.println(msg);
+//			writer.println(msg);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void kill() {
+		stopped = true;
 	}
 	
 

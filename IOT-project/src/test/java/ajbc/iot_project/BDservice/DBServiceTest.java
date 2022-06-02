@@ -41,7 +41,11 @@ class DBServiceTest {
 	
 	@Test
 	void testUpdateDB() {
-		IOT_THINGS.get(0).simulateInventoryChange();
+		IOTThing thing = IOT_THINGS.get(0);
+		List<Device> devices = thing.getDevices();
+		thing.simulateInventoryChange();
+		dbService.updateDB(thing);
+		
 	}
 
 //	@Test

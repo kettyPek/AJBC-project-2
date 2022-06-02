@@ -20,7 +20,7 @@ public class ClientRunner {
 	public static void main(String[] args) throws InterruptedException, UnknownHostException, IOException {
 		
 		final String SERVER_NAME = "localhost";
-		final int SERVER_PORT = 8098;
+		final int SERVER_PORT = 9090;
 		
 		List<IOTThing> thingsList = createIOTThings();
 		
@@ -47,9 +47,9 @@ public class ClientRunner {
 	
 	public static List<IOTThing> createIOTThings() {
 		List<IOTThing> thingsList = Arrays.asList(
-				new IOTThing(HardwareType.SOLAR_DEVICE,"solar100","solar",createListOfDevices()),
-				new IOTThing(HardwareType.SOLAR_DEVICE,"solar500","solar",createListOfDevices()),
-				new IOTThing(HardwareType.ELECTRIC_MACHINE,"electro","EL",createListOfDevices()),
+//				new IOTThing(HardwareType.SOLAR_DEVICE,"solar100","solar",createListOfDevices()),
+//				new IOTThing(HardwareType.SOLAR_DEVICE,"solar500","solar",createListOfDevices()),
+//				new IOTThing(HardwareType.ELECTRIC_MACHINE,"electro","EL",createListOfDevices()),
 				new IOTThing(HardwareType.ELECTRIC_MACHINE,"electro500","EL",createListOfDevices()));
 		return thingsList;
 	}
