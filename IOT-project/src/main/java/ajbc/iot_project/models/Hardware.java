@@ -1,5 +1,6 @@
 package ajbc.iot_project.models;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import ajbc.iot_project.enums.HardwareType;
@@ -17,11 +18,11 @@ public abstract class Hardware {
 	private String model;
 	private String manufacturer;
 
-	public Hardware() {
+	protected Hardware() {
 		ID = UUID.randomUUID();
 	}
 	
-	public Hardware(HardwareType hardwareType, String model, String manufacturer) {
+	protected Hardware(HardwareType hardwareType, String model, String manufacturer) {
 		ID = UUID.randomUUID();
 		this.hardwareType = hardwareType;
 		this.model = model;
@@ -62,5 +63,24 @@ public abstract class Hardware {
 		return "Hardware [uuid=" + ID + ", hardwareType=" + hardwareType + ", model=" + model + ", manufacturer="
 				+ manufacturer + "]";
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(ID, hardwareType, manufacturer, model);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Hardware other = (Hardware) obj;
+		return Objects.equals(ID, other.ID);
+	}
+	
+	
 
 }

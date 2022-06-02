@@ -45,18 +45,20 @@ public class DBService {
 	 */
 	public void updateDB(IOTThing thing) {
 
+		iotThings.put(thing.getUuid(), thing);
+		
 		if(iotThings.containsKey(thing.getUuid())) {
 
-		List<Device> oldDevices = iotThings.get(thing.getUuid()).getDevices();
-		List<Device> updatedDevices = thing.getDevices();
-		
-		oldDevices.forEach(device -> {
-			if(!updatedDevices.contains(device)) 
-				devices.remove(device.getUuid());});
-		
-		updatedDevices.forEach(device-> {
-			if(!oldDevices.contains(device)) 
-				devices.put(device.getUuid(), device);});
+			List<Device> oldDevices = iotThings.get(thing.getUuid()).getDevices();
+			List<Device> updatedDevices = thing.getDevices();
+			
+			oldDevices.forEach(device -> {
+				if(!updatedDevices.contains(device)) 
+					devices.remove(device.getUuid());});
+			
+			updatedDevices.forEach(device-> {
+				if(!oldDevices.contains(device)) 
+					devices.put(device.getUuid(), device);});
 		}
 	}
 
@@ -76,7 +78,8 @@ public class DBService {
 	public void addToDB(IOTThing thing) {
 		if(!containsIOTThing(thing)) {
 			iotThings.put(thing.getUuid(), thing);
-			thing.getDevices().forEach(device -> devices.put(device.getUuid(), device));
+			if(thing.getDevices() != null)
+				thing.getDevices().forEach(device -> devices.put(device.getUuid(), device));
 		}
 	}
 

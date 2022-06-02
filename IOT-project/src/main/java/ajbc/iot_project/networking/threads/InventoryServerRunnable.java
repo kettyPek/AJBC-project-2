@@ -8,7 +8,6 @@ import java.net.Socket;
 
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 
 import ajbc.iot_project.DBservice.DBService;
 import ajbc.iot_project.models.IOTThing;
@@ -45,14 +44,14 @@ public class InventoryServerRunnable implements Runnable {
 			String msg ;
 			if(!dbService.containsIOTThing(thing)) {
 				dbService.addToDB(thing);
-				msg = "IOT thing " + thing.getUuid() + " added to DB";
+				System.out.println("IOT thing " + thing.getUuid() + " added to DB");
 			}
 			else {
 				dbService.updateDB(thing);
-				msg = "Devices list was updated for IOT thing " + thing.getUuid();
+				System.out.println("Devices list was updated for IOT thing " + thing.getUuid());
 			}
 			
-//			writer.println(msg);
+
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

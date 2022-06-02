@@ -17,7 +17,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
 /**
- * This class handles Api requests of IOT thing
+ * This class handles API requests of IOT thing
  * @author ketty
  *
  */
@@ -28,7 +28,7 @@ public class IOTThingResource {
 	
 	DBService dbService = new DBService();
 	
-	
+
 	@GET
 	public Response getAllIOTThings() {
 		List<IOTThing> thing = dbService.getAllIOTThings();
@@ -41,7 +41,7 @@ public class IOTThingResource {
 		IOTThing thing = dbService.getIOTThingByID(id);
 		return Response.ok().entity(thing).build();
 	}
-	
+
 	@GET
 	@Path("/filter")
 	public Response getIOTThingByProperties(@BeanParam IOTThingFilterBean iotThingFilterBean) {

@@ -24,8 +24,7 @@ class IOTThingtTest {
 	}
 	
 
-	@Test
-	@DisplayName("Constractor test")
+	@Test@DisplayName("Constractor test")
 	void testCostractor() {
 		assertEquals(MODEL, thing.getModel() );
 		assertEquals(MANUFACTURER, thing.getManufacturer());

@@ -9,6 +9,7 @@ import java.util.List;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import ajbc.iot_project.enums.HardwareType;
@@ -21,36 +22,28 @@ public class ClientRunner {
 		
 		final String SERVER_NAME = "localhost";
 		final int SERVER_PORT = 9090;
+		final TimeUnit TIME_UNIT = TimeUnit.SECONDS;
+		final int INITIAL_DELAY = 0;
+		final int PERIOD = 10;
 		
 		List<IOTThing> thingsList = createIOTThings();
 		
 		
-		ExecutorService clientsService = Executors.newFixedThreadPool(thingsList.size());
-		for(int i=0; i<2;i++) 
-			thingsList.forEach(thing -> {
-				try {
-					thing.simulateInventoryChange();
-					clientsService.execute(new InventoryReport(thing,new Socket(SERVER_NAME,SERVER_PORT)));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
-			
+		ScheduledExecutorService clientsService = Executors.newScheduledThreadPool(thingsList.size());
 		
+		thingsList.forEach(thing -> {
+			clientsService.scheduleAtFixedRate(new InventoryReport(thing,SERVER_NAME,SERVER_PORT),INITIAL_DELAY,PERIOD,TIME_UNIT);});
 
 		
-		clientsService.shutdown();
-		
-		clientsService.awaitTermination(20, TimeUnit.SECONDS);
+
 	}
 	
 	public static List<IOTThing> createIOTThings() {
 		List<IOTThing> thingsList = Arrays.asList(
-//				new IOTThing(HardwareType.SOLAR_DEVICE,"solar100","solar",createListOfDevices()),
-//				new IOTThing(HardwareType.SOLAR_DEVICE,"solar500","solar",createListOfDevices()),
-//				new IOTThing(HardwareType.ELECTRIC_MACHINE,"electro","EL",createListOfDevices()),
-				new IOTThing(HardwareType.ELECTRIC_MACHINE,"electro500","EL",createListOfDevices()));
+				new IOTThing(HardwareType.SOLAR_DEVICE,"clientSOL","solar",createListOfDevices()),
+				new IOTThing(HardwareType.SOLAR_DEVICE,"clientSOL","solar",createListOfDevices()),
+				new IOTThing(HardwareType.ELECTRIC_MACHINE,"clientABS","EL",createListOfDevices()),
+				new IOTThing(HardwareType.ELECTRIC_MACHINE,"clientABS","ABB",createListOfDevices()));
 		return thingsList;
 	}
 	

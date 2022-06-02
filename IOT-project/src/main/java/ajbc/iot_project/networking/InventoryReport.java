@@ -13,21 +13,26 @@ import ajbc.iot_project.models.IOTThing;
 
 public class InventoryReport implements Runnable{
 	
-	private Socket clientSocket;
 	private IOTThing thing;
+	private String serverName;
+	private int serverPort;
 	
-	public InventoryReport(IOTThing thing, Socket clientSocket) {
+	public InventoryReport(IOTThing thing, String serverName, int serverPort) {
 		this.thing = thing;
-		this.clientSocket = clientSocket;
+		this.serverName = serverName;
+		this.serverPort = serverPort;
 	}
 	
 	
 	@Override
 	public void run() {
-		try(BufferedReader bufferReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		try(Socket clientSocket = new Socket(serverName,serverPort);
+				BufferedReader bufferReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);){
 			
 			System.out.println("Client connected to server");
+			
+			thing.simulateInventoryChange();
 			
 			Gson gson = new Gson();
 			String thingJson = gson.toJson(thing, IOTThing.class);
@@ -36,13 +41,11 @@ public class InventoryReport implements Runnable{
 			writer.println(thingJson);
 			System.out.println("IOT thing "+ thing.getUuid() +" sent to the server");
 			
-//			String serverMsg = bufferReader.readLine();
-//			System.out.println("Server message: " + serverMsg);
 
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println("prp");
 		}
 		
 	}
