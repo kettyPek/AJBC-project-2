@@ -13,10 +13,10 @@ import ajbc.iot_project.enums.HardwareType;
  */
 public abstract class Hardware {
 
-	private final UUID ID;
-	private HardwareType hardwareType;
-	private String model;
-	private String manufacturer;
+	protected final UUID ID;
+	protected HardwareType hardwareType;
+	protected String model;
+	protected String manufacturer;
 
 	protected Hardware() {
 		ID = UUID.randomUUID();
@@ -33,29 +33,16 @@ public abstract class Hardware {
 		return ID;
 	}
 
-
 	public HardwareType getHardwareType() {
 		return hardwareType;
-	}
-
-	public void setHardwareType(HardwareType hardwareType) {
-		this.hardwareType = hardwareType;
 	}
 
 	public String getModel() {
 		return model;
 	}
 
-	public void setModel(String model) {
-		this.model = model;
-	}
-
 	public String getManufacturer() {
 		return manufacturer;
-	}
-
-	public void setManufacturer(String manufacturer) {
-		this.manufacturer = manufacturer;
 	}
 
 	@Override

@@ -24,20 +24,29 @@ class IOTThingtTest {
 	}
 	
 
-	@Test@DisplayName("Constractor test")
-	void testCostractor() {
-		assertEquals(MODEL, thing.getModel() );
-		assertEquals(MANUFACTURER, thing.getManufacturer());
-		assertEquals(TYPE, thing.getHardwareType());
-		assertEquals(DEVICES, thing.getDevices());	
-		
+	@Test
+	@DisplayName("Constructor test")
+	void testCostructor() {
+		assertAll(
+				() -> assertEquals(MODEL, thing.model ),
+				() -> assertEquals(MANUFACTURER, thing.manufacturer),
+				() -> assertEquals(TYPE, thing.hardwareType),
+				() -> assertEquals(DEVICES, thing.devices));	
 	}
 	
-//	@Test
-//	@DisplayName("SimulatInventoryChange test ")
-//	void testSimulateInventoryChange() {
-//
-//	}
+	@Test
+	@DisplayName("getDevices() test")
+	void testGetDevices(){
+		assertEquals(DEVICES, thing.getDevices());
+	}
+	
+	@Test
+	@DisplayName("Ensures devices list changed after simulateInventoryChange()")
+	void testSimulateInventoryChange() {
+		List<Device> originalList = creatDevicesList();
+		thing.simulateInventoryChange();
+		assertNotEquals(originalList,thing.devices);
+	}
 	
 	private List<Device> creatDevicesList(){
 		List<Device> devices = new ArrayList<Device>();
@@ -46,6 +55,5 @@ class IOTThingtTest {
 		devices.add(new Device());
 		return devices;
 	}
-	
 
 }

@@ -39,14 +39,14 @@ public class IOTThingResource {
 	@Path("/{id}")
 	public Response getIOTThingByID(@PathParam("id") UUID id) {		
 		IOTThing thing = dbService.getIOTThingByID(id);
-		return Response.ok().entity(thing).build();
+		return Response.status(Status.CREATED).entity(thing).build();
 	}
 
 	@GET
 	@Path("/filter")
 	public Response getIOTThingByProperties(@BeanParam IOTThingFilterBean iotThingFilterBean) {
 		List<IOTThing> thing = dbService.getIOTThingByProperties(iotThingFilterBean.getType(),iotThingFilterBean.getModle(),iotThingFilterBean.getManufacturer());
-		return Response.ok().entity(thing).build();
+		return Response.status(Status.CREATED).entity(thing).build();
 	}
 	
 

@@ -21,13 +21,13 @@ import ajbc.iot_project.models.IOTThing;
 public class DBService {
 	
 	private DBMock db;
-	private volatile Map<UUID,IOTThing> iotThings;
-	private volatile Map<UUID,Device> devices;
+	protected volatile Map<UUID,IOTThing> iotThingsMap;
+	protected volatile Map<UUID,Device> devicesMap;
 	
 	public DBService() {
 		db = DBMock.getInstance();
-		iotThings = db.getIotThings();
-		devices = db.getDevices();
+		iotThingsMap = db.getIotThings();
+		devicesMap = db.getDevices();
 	}
 	
 
@@ -36,7 +36,7 @@ public class DBService {
 	 * @return list of IOT things from DB
 	 */
 	public List<IOTThing> getAllIOTThings(){
-		return iotThings.values().stream().collect(Collectors.toList());
+		return iotThingsMap.values().stream().collect(Collectors.toList());
 	}
 
 	/**
@@ -45,20 +45,20 @@ public class DBService {
 	 */
 	public void updateDB(IOTThing thing) {
 
-		iotThings.put(thing.getUuid(), thing);
+		iotThingsMap.put(thing.getUuid(), thing);
 		
-		if(iotThings.containsKey(thing.getUuid())) {
+		if(iotThingsMap.containsKey(thing.getUuid())) {
 
-			List<Device> oldDevices = iotThings.get(thing.getUuid()).getDevices();
+			List<Device> oldDevices = iotThingsMap.get(thing.getUuid()).getDevices();
 			List<Device> updatedDevices = thing.getDevices();
 			
 			oldDevices.forEach(device -> {
 				if(!updatedDevices.contains(device)) 
-					devices.remove(device.getUuid());});
+					devicesMap.remove(device.getUuid());});
 			
 			updatedDevices.forEach(device-> {
 				if(!oldDevices.contains(device)) 
-					devices.put(device.getUuid(), device);});
+					devicesMap.put(device.getUuid(), device);});
 		}
 	}
 
@@ -68,7 +68,7 @@ public class DBService {
 	 * @return true if IOT things exist in DB, otherwise return false
 	 */
 	public boolean containsIOTThing(IOTThing thing) {
-		return iotThings.containsKey(thing.getUuid());
+		return iotThingsMap.containsKey(thing.getUuid());
 	}
 
 	/**
@@ -77,9 +77,9 @@ public class DBService {
 	 */
 	public void addToDB(IOTThing thing) {
 		if(!containsIOTThing(thing)) {
-			iotThings.put(thing.getUuid(), thing);
+			iotThingsMap.put(thing.getUuid(), thing);
 			if(thing.getDevices() != null)
-				thing.getDevices().forEach(device -> devices.put(device.getUuid(), device));
+				thing.getDevices().forEach(device -> devicesMap.put(device.getUuid(), device));
 		}
 	}
 
@@ -91,7 +91,7 @@ public class DBService {
 	 * MissingDataException if id doesn't exist in DB
 	 */
 	public IOTThing getIOTThingByID(UUID id) {
-		IOTThing thing = iotThings.get(id);
+		IOTThing thing = iotThingsMap.get(id);
 		if(thing==null)
 			throw new MissingDataException("id " + id + " doesn't exist in DB");
 		return thing;
@@ -108,7 +108,7 @@ public class DBService {
 		List<IOTThing> things = new ArrayList<IOTThing>();
 		try{
 			HardwareType hardwareType = HardwareType.valueOf(type.toUpperCase());
-			List<IOTThing> thingsList = iotThings.values().stream().collect(Collectors.toList());
+			List<IOTThing> thingsList = iotThingsMap.values().stream().collect(Collectors.toList());
 			for(IOTThing iotThing : thingsList) {
 				if(iotThing.getHardwareType()==hardwareType && iotThing.getModel().equalsIgnoreCase(model) &&
 				iotThing.getManufacturer().equalsIgnoreCase(manufacturer)) {
@@ -130,7 +130,7 @@ public class DBService {
 	 * @return list of Devices things from DB
 	 */
 	public List<Device> getAllDevices() {
-		return devices.values().stream().collect(Collectors.toList());
+		return devicesMap.values().stream().collect(Collectors.toList());
 	}
 
 	/**
@@ -141,7 +141,7 @@ public class DBService {
 	 * MissingDataException if id doesn't exist in DB
 	 */
 	public Device getDeviceByID(UUID id) {
-		Device device = devices.get(id);
+		Device device = devicesMap.get(id);
 		if(device==null)
 			throw new MissingDataException("id " + id + " doesn't exist in DB");
 		return device;
@@ -156,10 +156,10 @@ public class DBService {
 	 * @return Device if it exist in DB
 	 */
 	public List<Device> getDevicesByProperties(String type, String model, String manufacturer, UUID thingID) {
-		if(!iotThings.containsKey(thingID))
+		if(!iotThingsMap.containsKey(thingID))
 			throw new MissingDataException("IOT thing id " + thingID + " doesn't exist in DB");
 		else {
-			List<Device> devices = iotThings.get(thingID).getDevices();
+			List<Device> devices = iotThingsMap.get(thingID).getDevices();
 			HardwareType hardwareType = HardwareType.valueOf(type.toUpperCase());
 			devices = devices.stream().filter(device -> device.getHardwareType()==hardwareType && device.getModel().equalsIgnoreCase(model) &&
 					device.getManufacturer().equalsIgnoreCase(manufacturer)).collect(Collectors.toList());

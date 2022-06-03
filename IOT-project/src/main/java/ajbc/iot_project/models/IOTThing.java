@@ -1,5 +1,6 @@
 package ajbc.iot_project.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ajbc.iot_project.enums.HardwareType;
@@ -10,10 +11,11 @@ import ajbc.iot_project.enums.HardwareType;
  */
 public class IOTThing extends Hardware{
 	
-	private List<Device> devices;
+	protected List<Device> devices;
 
 	public IOTThing() {
 		super();
+		devices = new ArrayList<Device>();
 	}
 	
 	public IOTThing(HardwareType hardwareType, String model, String manufacturer, List<Device> devices) {
@@ -26,14 +28,18 @@ public class IOTThing extends Hardware{
 		return devices;
 	}
 	
+	/**
+	 * Simulates a chnage in devices list.
+	 * Removes random device from the list if the list isn't empty
+	 * Adds new device to the list in random place
+	 */
 	public void simulateInventoryChange() {
 		if(!devices.isEmpty()) {
 			int removeIndex = (int)(Math.random()*devices.size());
 			devices.remove(removeIndex);
 		}
 		int addIndex = (int)(Math.random()*devices.size());
-		devices.add(addIndex, new Device(HardwareType.ACTUATOR,"acw","BF"));
-		
+		devices.add(addIndex, new Device(HardwareType.ACTUATOR,"acw","BF"));	
 	}
 
 	@Override

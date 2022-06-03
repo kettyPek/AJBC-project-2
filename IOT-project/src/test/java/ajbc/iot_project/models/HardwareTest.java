@@ -13,7 +13,7 @@ class HardwareTest {
 	private final String MODEL = "ACE";
 	private final String MANUFACTURER = "solar100";
 	
-	Hardware hardware;
+	private Hardware hardware;
 	
 	public HardwareTest() {
 		hardware = new Device(TYPE,MODEL,MANUFACTURER);
@@ -22,7 +22,35 @@ class HardwareTest {
 	@Test
 	@DisplayName("Constractor test")
 	void testCostractor() {
-		//TODO
+		assertAll(
+				() -> assertEquals(TYPE, hardware.hardwareType),
+				() -> assertEquals(MODEL, hardware.model),
+				() -> assertEquals(MANUFACTURER, hardware.manufacturer));
 	}
+	
+	@Test
+	@DisplayName("getHardwareType() test")
+	void testGetHardwareType() {
+		assertEquals(hardware.hardwareType, hardware.getHardwareType());
+	}
+	
+	@Test
+	@DisplayName("getModel() test")
+	void testGetModel() {
+		assertEquals(hardware.model, hardware.getModel());
+	}
+	
+	@Test
+	@DisplayName("getManufacturer() test")
+	void testGetManufacturer() {
+		assertEquals(hardware.manufacturer, hardware.getManufacturer());
+	}
+	
+	@Test
+	@DisplayName("getUuid() test")
+	void testGetUuid() {
+		assertEquals(hardware.ID, hardware.getUuid());
+	}
+	
 
 }

@@ -48,14 +48,4 @@ public class InventoryServerThread extends Thread {
 
 	}
 
-//	public static void main(String[] args) throws InterruptedException {
-//
-//		int port = 8098;
-//
-//		InventoryServer inventoryServer = new InventoryServer(port);
-//		
-//		inventoryServer.startServer();
-//
-//	}
-
 }

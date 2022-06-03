@@ -23,11 +23,9 @@ class DeviceTest {
 	@DisplayName("Constractor test")
 	void testConstructor() {
 		assertAll(
-				() -> assertEquals(TYPE, device.getHardwareType()),
-				() -> assertEquals(MODEL, device.getModel()),
-				() -> assertEquals(MANUFACTURER, device.getManufacturer()));
+				() -> assertEquals(TYPE, device.hardwareType),
+				() -> assertEquals(MODEL, device.model),
+				() -> assertEquals(MANUFACTURER, device.manufacturer));
 	}
-	
-	
 
 }

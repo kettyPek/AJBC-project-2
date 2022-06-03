@@ -32,8 +32,7 @@ public class InventoryServerRunnable implements Runnable {
 	@Override
 	public void run() {
 
-		try(BufferedReader bufferReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);){
+		try(BufferedReader bufferReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));){
 			String line = bufferReader.readLine();
 			
 			Gson gson = new Gson();
